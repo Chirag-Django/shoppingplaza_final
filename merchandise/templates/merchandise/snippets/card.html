@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<div class="card" style="width: 18rem;">
+    {% if instance.product_image %}
+    <img src="{{ instance.product_image.url }}" class="card-img-top" alt="Product Image">
+    {% endif %}
+    <div class="card-body">
+      <h5 class="card-title">{{instance.product_name}}</h5>
+      <p class="card-text">{{instance.product_details |linebreaks|truncatewords:5}}</p>
+      <a href="{% url 'merchandise:product_details' slug=instance.product_slug %}" class="btn btn-primary">View Details</a>
+        <br>
+
+    </div>
+</div>

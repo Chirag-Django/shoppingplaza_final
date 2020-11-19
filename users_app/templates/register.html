@@ -1,0 +1,30 @@
+{% extends 'merchandise/base.html' %}
+{% load static %}
+{% block title %}Register{% endblock title %}
+    {% block content %}
+
+            <div class="account-page">
+              <div class="container">
+                  <div class="row">
+                      <div class="col-2">
+                          <img width="120%" src="{% static 'images/background/two-girls-shopping.png' %}" alt="">
+                      </div>
+                      <div class="col-2">
+                          <div class="form-container">
+                                  <span>Register</span>
+                                  <hr>
+                              <form method="POST" id="registerForm">
+                                {% csrf_token %}
+                                {{ register_form.as_p }}
+                                <button type="submit" class="btn btn-primary mb-3">Register & Start Shopping!</button>
+                              </form>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+
+
+
+{% endblock content%}

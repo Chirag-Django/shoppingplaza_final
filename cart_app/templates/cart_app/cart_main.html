@@ -1,0 +1,86 @@
+{% extends 'merchandise/base.html' %}
+{% load static %}
+{% block content %}
+
+
+{% if my_cart.products.exists %}
+<div class="small-container cart-page">
+    <h1 class="featured-title">Your Cart</h1>
+    <table>
+        <tr>
+            <th>Sr. No.</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Subtotal</th>
+        </tr>
+        {% for product in my_cart.products.all %}
+        <tr>
+            
+            <td>{{forloop.counter}}</td>
+            <td>
+                <div class="cart-info">
+                    <img src="{{product.product_image.url}}" alt="">
+                    <div>
+                        <p>{{product.product_name}}</p>
+                        <small>Price:Rs.{{product.product_price}}/-</small>
+                        <form action="{% url 'cart_app:remove_product'%}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="productId" value="{{product.pk}}">
+                            <button style="background: rgb(235, 99, 99);">&#x2718</button><em style="color: var(--teal);"> Remove</em>
+                          </form>
+                    </div>
+                </div>
+            </td>
+            <td style="font-size: larger;">1</td>
+            <td>{{product.product_price}}</td>
+            
+        </tr>
+        {% endfor %}
+    </table>
+
+    <div class="total-price">
+        <table>
+            <tr>
+                <td>Subtotal</td>
+                <td>{{my_cart.subtotal}}</td>
+            </tr>
+            <tr>
+                <td>Tax</td>
+                <td>10%</td>
+            </tr>
+            <tr>
+                <td>Total</td>
+                <td>{{my_cart.cart_total}}</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td><a href="{% url 'cart_app:checkout' %}" class="btn-card" >Checkout!</a></td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+{% else %}
+<div class="offer empty-cart">
+    <h1 class="featured-title">Your Cart</h1>
+    <div class="row">
+        <div class="col-2" >
+            <img id="cart-image"  src="{% static 'images/background/shopping-cart.jpg' %}"
+                alt="">
+        </div>
+        <div class="col-2">
+            
+            <h1>Your Cart is Empty!!!!</h1>
+            <h3>
+                Hurry Up before Stock Ends!!!!!
+            </h3> <br>
+            <a href="{% url 'merchandise:products' %}" class="btn">Continue Shopping &#10132;</a>
+        </div>
+    </div>
+</div>
+
+{%endif%}
+
+
+{% endblock%}
+

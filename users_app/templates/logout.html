@@ -1,0 +1,23 @@
+{% extends 'merchandise/base.html' %}
+{% load static %}
+{% block title %}Logged out{% endblock title %}
+    {% block content %}
+<div class="offer empty-cart">
+                <div class="row">
+                    <div class="col-2" >
+                        <img id="logged-out-image"  src="{% static 'images/background/logging-out.png' %}"
+                            alt="">
+                    </div>
+                    <div class="col-2">
+                        <h1>You have Successfully Logged Out!</h1>
+                        <h3>
+                            Craving for More!!!! <br>
+                            Continue Shopping &#10132;
+                        </h3> <br>
+                        <a href="{% url 'users_app:login' %}" class="btn">Login Again</a>
+                    </div>
+                </div>
+            </div>
+
+
+    {% endblock content%}

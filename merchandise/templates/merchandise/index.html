@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+
+{% extends 'merchandise/base.html' %}
+{%load static%}
+    {% block content %}
+
+        <div class="container">
+            <div class="row">
+                <div class="col-2">
+                    <h1>There Ain't no Party... <br>Like A Shopping Party!</h1>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. <br> Est ipsa quae magnam voluptatum
+                        libero nisi aspernatur itaque reprehenderit similique perferendis?</p>
+                    <a href="{% url 'merchandise:products' %}" class="btn">Explore Now &#10132;</a>
+                </div>
+
+                <div class="col-2">
+                    <img src="{% static 'images/background/portrait-girl-talking-mobile-phone_-_Copy-removebg-preview.png' %}" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="categories">
+            <div class="small-container">
+                <h2 class="featured-title">Categories</h2>
+                <div class="row">
+                    <div class="col-3"><img src="{% static 'images/background/clothing.jpg' %}" alt="">
+                        <h3 class="category">Clothing</h3>
+                    </div>
+                    <div class="col-3"><img src="{% static 'images/background/electronics.jpeg' %}" alt="">
+                        <h3 class="category">Electronics</h3>
+                    </div>
+                    <div class="col-3"><img src="{% static 'images/background/accessories.jpg' %}" alt="">
+                        <h3 class="category">Accesories</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="offer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-2" >
+                        <img id="offer-image"  src="{% static 'images/background/two-girls-shopping.png' %}"
+                            alt="">
+                    </div>
+                    <div class="col-2">
+                        <p>Exclusive Offers on Shopping Plaza!</p>
+                        <h1>Upto 40% off on all Products</h1>
+                        <small>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. lorem ipsum!! <br> Odio quisquam quibusdam asperiores quae
+                            maiores dignissimos in reprehenderit quos blanditiis impedit.
+                        </small> <br>
+                        <a href="{% url 'merchandise:products' %}" class="btn">Start Shopping &#10132;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="small-container">
+            <h2 class="featured-title">Featured Products</h2>
+            {% if featured_products.exists %}
+            <div class="row">
+                {% for featured_product in featured_products %}
+                <div class="col-4">
+                    <img src="{{featured_product.product_image.url}}" alt="No Image found">
+                    <h4>{{featured_product.product_name}}</h4>
+                    <p>Rs.{{featured_product.product_price}}/-</p>
+    
+                    <a href="{% url 'merchandise:product_details' slug=featured_product.product_slug %}" class="btn-card" >View Details</a>
+                    <form action="{% url 'cart_app:add_product' %}"  class="form-ajax" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="productId" value="{{featured_product.pk}}">
+                        <input class="btn-card2" type="submit" value="Add To Cart">
+                    </form>
+    
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+                    <center>No Featured Products found!!!</center>
+            {% endif %}
+        </div>
+
+    <div class="testimonial">
+        <div class="small-container">
+            <h2 class="featured-title">Testimonials</h2>
+            <div class="row">
+                <div class="col-3">
+                    <i class="fa fa-quote-left"></i>
+                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Animi quo dolore, iste maxime corporis inventore!</p>
+                    <div class="rating">
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                    </div>
+                    <img src="{% static 'images/profile/profile1.jpg' %}" alt="">
+                    <h3>Rohit Shah</h3>
+                </div>
+                <div class="col-3">
+                    <i class="fa fa-quote-left"></i>
+                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Animi quo dolore, iste maxime corporis inventore!</p>
+                    <div class="rating">
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star "></span>
+                    </div>
+                    <img src="{% static 'images/profile/profile2.jpg' %}" alt="">
+                    <h3>Jayesh Patil</h3>
+                </div>
+                <div class="col-3">
+                    <i class="fa fa-quote-left"></i>
+                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Animi quo dolore, iste maxime corporis inventore!</p>
+                    <div class="rating">
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                    </div>
+                    <img src="{% static 'images/profile/profile3.jpg' %}" alt="">
+                    <h3>Jay Dave</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}

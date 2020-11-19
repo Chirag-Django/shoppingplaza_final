@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+{% extends 'merchandise/base.html' %}
+{% block content %}
+
+<div class="small-container single-product">
+    <div class="row">
+        <div class="col-2">
+            <img src="{{product_details.product_image.url}}" width="70%" height="70%" id="productImg"  alt="">
+            <div class="small-img-row">
+                <div class="small-img-col">
+                    <img src="{{product_details.product_image.url}}" width="100%" alt="" class="smallImg" onclick="">
+                </div>
+                <div class="small-img-col">
+                    <img src="{{product_details.product_image.url}}" width="100%" alt="" class="smallImg" onclick="">
+                </div>
+                <div class="small-img-col">
+                    <img src="{{product_details.product_image.url}}" width="100%" alt="" class="smallImg" onclick="">
+                </div>
+                <div class="small-img-col">
+                    <img src="{{product_details.product_image.url}}" width="100%" alt="" class="smallImg" onclick="">
+                </div>
+            </div>
+        </div>
+        <div class="col-2">
+            <h1>{{product_details.product_name}}</h1>
+            <h4>Price: Rs.{{product_details.product_price}}/-</h4>
+            <form action="{% url 'cart_app:add_product' %}"  class="form-ajax" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="productId" value="{{product_details.pk}}">
+                <input class="btn" type="submit" value="Add To Cart">
+            </form>
+            <h3>Product Details  <i class="fa fa-indent"></i> </h3>
+            <div id="product-details">{{product_details.product_details}}</div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+{% endblock %}

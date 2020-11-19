@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+{% extends 'merchandise/base.html' %}
+{% block content %}
+
+    <!-- <div class="row">
+        <div class="col">
+            <p>Common Tags:
+            {% for mt in common_tags %}
+                <a href="#" class="badge badge-success">{{mt}}</a>
+            {% endfor %}
+            </p>
+        </div>
+    </div> -->
+
+    <div class="small-container">
+        <div class="row row-2">
+            <h2>All Products</h2>
+            <select name="selected_sort" id="">
+                <option disabled="true" selected>Select Sorting</option>
+                <option value="">Default Sorting</option>
+                <option value="">Price - Low to High</option>
+                <option value="">Price - High to Low</option>
+            </select>
+            <input type="submit" value="Click">
+        </div>
+        {% if all_products %}
+        <div class="row">
+            {% for product in all_products %}
+            <div class="col-4">
+                <img src="{{product.product_image.url}}" alt="No Image found">
+                <h4>{{product.product_name}}</h4>
+                <p>Rs.{{product.product_price}}/-</p>
+
+                <a href="{% url 'merchandise:product_details' slug=product.product_slug %}" class="btn-card" >View Details</a>
+                <form action="{% url 'cart_app:add_product' %}"  class="form-ajax" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="productId" value="{{product.pk}}">
+                    <input class="btn-card2" type="submit" value="Add To Cart">
+                </form>
+
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+                <center>No Products found!!!</center>
+        {% endif %}
+    </div>
+            {% if messages %}
+            {% for message in messages %}
+
+            <script type="text/javascript">
+                var message = '{{message|safe}}';
+                alert(message)
+            </script>
+            {% endfor %}
+            {% endif %}
+
+
+{% endblock %}

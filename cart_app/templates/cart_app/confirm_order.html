@@ -1,0 +1,23 @@
+{% extends 'merchandise/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="offer empty-cart">
+    <div class="row">
+        <div class="col-2" >
+            <img id="shipping-box-image"  src="{% static 'images/background/shipping-box.jpg' %}"
+                alt="">
+        </div>
+        <div class="col-2">
+            <h1>Your Order is on the Way!!!!</h1>
+            <h3>
+                Craving for More!!!!
+            </h3> <br>
+            <a href="{% url 'merchandise:products' %}" class="btn">Continue Shopping &#10132;</a>
+        </div>
+    </div>
+</div>
+
+
+{% endblock%}
+
