@@ -46,7 +46,16 @@ def productList_Category_Wise(request,product_category=None):
             products = products.order_by('product_rating')
         elif selected_sort == 'ratingHighToLow':
             products = products.order_by('-product_rating')
-    return render(request,'merchandise/all_products.html',{'all_products':products,"product_category":product_category})
+    page_product = products
+    page = request.GET.get('page', 1)
+    paginator = Paginator(page_product, 8)
+    try:
+        page_product = paginator.page(page)
+    except PageNotAnInteger:
+        page_product = paginator.page(1)
+    except EmptyPage:
+        page_product = paginator.page(paginator.num_pages)
+    return render(request,'merchandise/all_products.html',{'all_products':products,'page_product':page_product,"product_category":product_category})
 
 
 def productDetails(request,slug=None):
