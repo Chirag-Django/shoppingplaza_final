@@ -45,7 +45,9 @@
               <input class="search-input" name="search" type="search" placeholder="Search" aria-label="Search">
               <button class="btn-small" type="submit">Search</button>
             </form>
-            <a href="{% url 'cart_app:cart' %}" id="cart-add"><img src="{% static 'images/favicon/shopping.png' %}" id="cart-icon" width="30px" height="30px" alt="">(<span class="navbar-cart-count">{{request.session.item_count}}</span> items)</a>
+            <a href="{% url 'cart_app:cart' %}" id="cart-add"><img src="{% static 'images/favicon/shopping.png' %}" id="cart-icon" width="30px" height="30px" alt="">
+               <strong> <span class="navbar-cart-count">{{request.session.item_count}}</span> Items</strong>
+            </a>
             
             <img src="{% static 'images/favicon/hamburger.png'  %}" class="menu-icon" width="40px" height="40px" onclick="menuToggle()">
         </div>
