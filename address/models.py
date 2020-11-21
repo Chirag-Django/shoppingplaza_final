@@ -23,10 +23,3 @@ class ShippingAddress(Address):
 
     class Meta:
         verbose_name_plural = "Shipping Addresses"
-
-# class BillingAddress(Address):
-#     def __str__(self):
-#         return 'Billing Address :'+ str(self.billing_details)
-#
-#     class Meta:
-#         verbose_name_plural = "Billing Addresses"

@@ -4,8 +4,17 @@ import os
 from django.dispatch import receiver
 from .slugGenerator import unique_slug_generator
 from taggit.managers import TaggableManager
+from django.core.validators import MinValueValidator, MaxValueValidator
+
 
 # Create your models here.
+
+PRODUCT_CATEGORY= (
+    ('Electronics', 'Electronics'),
+    ('Clothing', 'Clothing'),
+    ('Accessories', 'Accessories'),
+    ('Miscellaneous','Miscellaneous')
+    )
 
 def file_extention(filename):
     base_name = os.path.basename(filename)
@@ -31,6 +40,8 @@ class Product(models.Model):
     product_name = models.CharField(max_length=256)
     product_details = models.TextField()
     product_price = models.DecimalField(max_digits=19, decimal_places=2,default=0.00)
+    product_category = models.CharField(max_length=120, default='Miscellaneous', choices=PRODUCT_CATEGORY)
+    product_rating = models.IntegerField(default=5,validators=[MaxValueValidator(5),MinValueValidator(0)])
     product_image = models.ImageField(upload_to=upload_image, null=True, blank=True)
     product_slug = models.SlugField(unique=True, null=True, blank=True)
     product_tags = TaggableManager(blank=True)

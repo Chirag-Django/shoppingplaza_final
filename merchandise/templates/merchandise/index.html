@@ -22,14 +22,23 @@
             <div class="small-container">
                 <h2 class="featured-title">Categories</h2>
                 <div class="row">
-                    <div class="col-3"><img src="{% static 'images/background/clothing.jpg' %}" alt="">
-                        <h3 class="category">Clothing</h3>
+                    <div class="col-3">
+                        <a href="{% url 'merchandise:products_category' 'Clothing' %}">
+                            <img src="{% static 'images/background/clothing.jpg' %}" alt="">
+                            <h3 class="category">Clothing</h3>
+                        </a>
                     </div>
-                    <div class="col-3"><img src="{% static 'images/background/electronics.jpeg' %}" alt="">
+                    <div class="col-3">
+                        <a href="{% url 'merchandise:products_category' 'Electronics' %}">
+                            <img src="{% static 'images/background/electronics.jpeg' %}" alt="">
                         <h3 class="category">Electronics</h3>
+                        </a>
                     </div>
-                    <div class="col-3"><img src="{% static 'images/background/accessories.jpg' %}" alt="">
+                    <div class="col-3">
+                        <a href="{% url 'merchandise:products_category' 'Accessories' %}">
+                            <img src="{% static 'images/background/accessories.jpg' %}" alt="">
                         <h3 class="category">Accesories</h3>
+                        </a>
                     </div>
                 </div>
             </div>

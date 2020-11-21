@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import Product
 from django.http import Http404
 from cart_app.models import Cart
+from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 
 # Create your views here.
 
@@ -11,10 +12,42 @@ def index(request):
 
 def productList(request):
     products = Product.objects.all()
+    if request.method == 'POST':
+        selected_sort = request.POST.get('selected_sort')
+        if selected_sort == 'lowToHigh':
+            products = products.order_by('product_price')
+        elif selected_sort == 'highToLow':
+            products = products.order_by('-product_price')
+        elif selected_sort == 'ratingLowToHigh':
+            products = products.order_by('product_rating')
+        elif selected_sort == 'ratingHighToLow':
+            products = products.order_by('-product_rating')
+    page_product = products
+    page = request.GET.get('page', 1)
+    paginator = Paginator(page_product, 8)
+    try:
+        page_product = paginator.page(page)
+    except PageNotAnInteger:
+        page_product = paginator.page(1)
+    except EmptyPage:
+        page_product = paginator.page(paginator.num_pages)
+    return render(request,'merchandise/all_products.html',{'all_products':products,'page_product':page_product})
 
-    common_tags = Product.product_tags.most_common()[:4]
-    return render(request,'merchandise/all_products.html',{'all_products':products,'common_tags':common_tags,
-                                                           })
+
+def productList_Category_Wise(request,product_category=None):
+    products = Product.objects.all().filter(product_category=product_category)
+    if request.method == 'POST':
+        selected_sort = request.POST.get('selected_sort')
+        if selected_sort == 'lowToHigh':
+            products = products.order_by('product_price')
+        elif selected_sort == 'highToLow':
+            products = products.order_by('-product_price')
+        elif selected_sort == 'ratingLowToHigh':
+            products = products.order_by('product_rating')
+        elif selected_sort == 'ratingHighToLow':
+            products = products.order_by('-product_rating')
+    return render(request,'merchandise/all_products.html',{'all_products':products,"product_category":product_category})
+
 
 def productDetails(request,slug=None):
     global product_details

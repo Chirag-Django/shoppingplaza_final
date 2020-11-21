@@ -17,11 +17,10 @@ from django.contrib import admin
 from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.views.generic import TemplateView
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('bootstrap/',TemplateView.as_view(template_name='bootstrap/bootstrap_template.html')),
     path('',include('merchandise.urls')),
     path('',include('searchFilter.urls')),
     path('',include('cart_app.urls')),

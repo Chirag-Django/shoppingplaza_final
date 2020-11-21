@@ -1,50 +1,93 @@
 {% extends 'merchandise/base.html' %}
 {% block content %}
-    <div class="col-12 col-md-8">
-    <h2 style="text-decoration: underline">Checkout</h2>
+        <div class="container">
+            <div class="row">
+                <div class="col-2">
+                    {% if my_order %}
+                    <h2 class="featured-title">Order Details</h2>
+                    <table style="width:100%; border: 1px solid black">
+                      <tr>
+                        <th>Order ID</th>
+                        <td style="border: 1px solid black">{{my_order.order_id}}</td>
+                      </tr>
+                      <tr>
+                        <th>Cart Total</th>
+                        <td style="border: 1px solid black">Rs.{{my_order.cart.cart_total}}/-</td>
+                      </tr>
+                       <tr>
+                           <th>Shipping Total</th>
+                           <td style="border: 1px solid black">Rs.{{my_order.shipping_total}}/-</td>
+                       </tr>
+                       <tr>
+                           <th>Order Total</th>
+                           <td style="border: 1px solid black">Rs.{{my_order.total}}/-</td>
+                       </tr>
+                    </table>
+                    {% endif %}
+                            {% if billing_details %}
+                    <h2 class="featured-title">Billing Details</h2>
+                    <table style="width:100%; border: 1px solid black">
+                      <tr>
+                        <th>Name</th>
+                          {% if billing_details.billing_user.is_authenticated %}
+                        <td style="border: 1px solid black">{{billing_details.billing_user.username|title}}</td>
+                                                  {% else %}
+                          <td style="border: 1px solid black">A Happy Customer!!</td>
+                          {% endif %}
+                      </tr>
+                      <tr>
+                        <th>Email</th>
+                        <td style="border: 1px solid black">{{billing_details.billing_email}}</td>
+                      </tr>
+                     </table>
 
+                        {%else%}
+                    <h2 class="featured-title">To Confirm Order</h2>
 
-    {% if my_order %}
-    <h3>Order ID: {{my_order.order_id}}</h3>
-    <h3>Cart Total: {{my_order.cart.cart_total}}</h3>
-    <h3>Shipping Total: {{my_order.shipping_total}}</h3>
-    <h3>Order Total: {{my_order.total}}</h3>
-    {% endif %}
-    </div>
+                <center><a href="{% url 'users_app:login' %}" class="btn btn-success">LOGIN</a></center>
 
-        {% if billing_details %}
-    <div class="col-12 col-md-8">
-    <h2 style="text-decoration: underline">Billing Details</h2>
-        {% if billing_details.billing_user.is_authenticated %}
-    <h3>Name: {{billing_details.billing_user.username|title}}</h3>
-        {% else %}
-        <h3>Name: Happy Guest</h3>
+            <center><strong>or</strong></center>
+
+                    <center><a href="{% url 'users_app:guest_register' %}" class="btn btn-warning">REGISTER AS GUEST!</a></center>
+
         {% endif %}
-    <h3>Email: {{billing_details.billing_email}}</h3>
-    <h3>Active: {{billing_details.billing_active}}</h3>
-    </div>
+                </div>
+                {% if request.session.guest_email or user.is_authenticated %}
 
-    {%else%}
-    <div class="col-12 col-md-6">
-        <a href="{% url 'users_app:login' %}" class="btn btn-success">LOGIN</a>
-    </div>
-    <strong>or</strong>
-    <div class="col-12 col-md-6">
-        <h3>Continue as Guest</h3>
-            <div class="col-12 col-md-6">
-        <a href="{% url 'users_app:guest_register' %}" class="btn btn-warning">REGISTER</a>
-    </div>
-    </div>
-    {% endif %}
-        <div class="col-12 col-md-6 mx-auto">
-        <h3 style="text-decoration: underline;">Shipping Address</h3>
-        <form method="post">
-            {%csrf_token%}
-            {{shipping_address.as_p}}
-            <input type="submit" class="btn btn-success">
-        </form>
+                <div class="col-2">
+                    {% if not request.session.shipping_addr_id %}
+                    <h2 class="featured-title" style="font-size: 20px">Please Fill Shipping Address to confirm order</h2>
+                    <div class="form-container shippingform-container">
+                        <span style="width: 100%">Shipping Address</span>
+                            <hr>
+                              <form method="POST" id="shippingForm">
+                                {% csrf_token %}
+                                {{ shipping_address.as_p }}
+                                  <input class="btn" type="submit" value="Submit Shipping Address">
+                              </form>
+                    </div>
+                    {%else%}
+                    <h2 class="featured-title" style="font-size: 20px">Shipping Details</h2>
+                    <div class="form-container" style="text-align: left; padding: 35px 15px;">
+                        <h3>Line 1: {{shipping_object.line_1}}</h3>
+                        <br>
+                        {% if shipping_object.line_2 %}
+                        <h3>Line 2: {{shipping_object.line_2}}</h3>
+                        {%else%}
+                        <h3>Line 2: -----------</h3>
+                        {%endif%} <br>
+                        <h3>City: {{shipping_object.city}}</h3> <br>
+                        <h3>Sate: {{shipping_object.state}}</h3> <br>
+                        <h3>Country: {{shipping_object.country}}</h3>
+                    </div>
+                    {%endif%}
+                </div>
+                {% endif %}
+            </div>
+            {% if request.session.shipping_addr_id %}
+            <center><a class="btn-card2" href="{% url 'cart_app:order_shipped' %}" style="width: 240px; padding: 10px">Confirm Order</a></center>
+            {% endif %}
         </div>
-    <a class="btn" href="{% url 'cart_app:order_shipped' %}">COnfirm Order</a>
 
 {% endblock%}
 

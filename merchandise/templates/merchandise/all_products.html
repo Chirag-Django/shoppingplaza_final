@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 {% extends 'merchandise/base.html' %}
+{% load static %}
 {% block content %}
+
 
     <!-- <div class="row">
         <div class="col">
@@ -14,46 +16,142 @@
 
     <div class="small-container">
         <div class="row row-2">
-            <h2>All Products</h2>
-            <select name="selected_sort" id="">
-                <option disabled="true" selected>Select Sorting</option>
-                <option value="">Default Sorting</option>
-                <option value="">Price - Low to High</option>
-                <option value="">Price - High to Low</option>
-            </select>
-            <input type="submit" value="Click">
+            <h2>All Products
+            {% if product_category%}
+                - {{product_category}}
+             {% endif%}
+            </h2>
+            <form action="" method="POST">
+                {%csrf_token%}
+                <select name="selected_sort" id="">
+                <option disabled selected>Select Sorting</option>
+                <option value="default">Default Sorting</option>
+                <option value="lowToHigh">Price - Low to High</option>
+                <option value="highToLow">Price - High to Low</option>
+                <option value="ratingHighToLow">Rating - High to Low</option>
+                <option value="ratingLowToHigh">Rating - Low to High</option>
+                </select>
+            <input class="btn-card2" type="submit" value="Sort">
+            </form>
         </div>
-        {% if all_products %}
+        {% if page_product %}
         <div class="row">
-            {% for product in all_products %}
+            {% for product in page_product %}
             <div class="col-4">
                 <img src="{{product.product_image.url}}" alt="No Image found">
                 <h4>{{product.product_name}}</h4>
                 <p>Rs.{{product.product_price}}/-</p>
-
+                <div class="stars"></div>
                 <a href="{% url 'merchandise:product_details' slug=product.product_slug %}" class="btn-card" >View Details</a>
                 <form action="{% url 'cart_app:add_product' %}"  class="form-ajax" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="productId" value="{{product.pk}}">
                     <input class="btn-card2" type="submit" value="Add To Cart">
                 </form>
-
             </div>
+
+
             {% endfor %}
         </div>
         {% else %}
                 <center>No Products found!!!</center>
         {% endif %}
+
+    {% if page_product.has_other_pages %}
+     <div class="page-btn">
+    {% if page_product.has_previous %}
+      <a href="?page={{ page_product.previous_page_number }}"><span>&laquo;</span></a>
+    {% endif %}
+    {% for i in page_product.paginator.page_range %}
+      {% if page_product.number == i %}
+            <span id="active">{{ i }}</span>
+      {% else %}
+        <a href="?page={{ i }}"><span>{{ i }}</span></a>
+      {% endif %}
+    {% endfor %}
+    {% if page_product.has_next %}
+      <a href="?page={{ page_product.next_page_number }}"><span>&raquo;</span></a>
+    {% endif %}
+        </div>
+    {% endif %}
+
+
+
     </div>
+
+
+
+
+
             {% if messages %}
             {% for message in messages %}
 
             <script type="text/javascript">
                 var message = '{{message|safe}}';
                 alert(message)
-            </script>
+
+           </script >
             {% endfor %}
             {% endif %}
+            <script type="text/javascript">
+                var product_count = Number('{{all_products.count}}')
+                var stars = []
+                '{% for product in all_products %}'
+                var product_stars = Number('{{product.product_rating}}')
+                stars.push(product_stars)
+                '{% endfor %}'
+                console.log(stars)
+                console.log(product_count)
+                var starNode = document.getElementsByClassName('stars')
+                for (let i = 0; i < product_count; i++) {
+                    starNode[i].innerHTML = stars[i] + " stars"
+                    switch (stars[i]) {
+                              case 0:
+                                starNode[i].innerHTML = "<span class=\"fa fa-star\"></span>\n" +
+                                                        "<span class=\"fa fa-star\"></span>\n" +
+                                                        "<span class=\"fa fa-star\"></span>\n" +
+                                                        "<span class=\"fa fa-star\"></span>\n" +
+                                                        "<span class=\"fa fa-star\"></span>";
+                                break;
+                              case 1:
+                                starNode[i].innerHTML = "<span class=\"fa fa-star checked\"></span>\n" +
+                                                        "<span class=\"fa fa-star\"></span>\n" +
+                                                        "<span class=\"fa fa-star\"></span>\n" +
+                                                        "<span class=\"fa fa-star\"></span>\n" +
+                                                        "<span class=\"fa fa-star\"></span>";
+                                break;
+                              case 2:
+                                 starNode[i].innerHTML = "<span class=\"fa fa-star checked\"></span>\n" +
+                                                        "<span class=\"fa fa-star checked\"></span>\n" +
+                                                        "<span class=\"fa fa-star\"></span>\n" +
+                                                        "<span class=\"fa fa-star\"></span>\n" +
+                                                        "<span class=\"fa fa-star\"></span>";
+                                break;
+                              case 3:
+                                starNode[i].innerHTML = "<span class=\"fa fa-star checked\"></span>\n" +
+                                                        "<span class=\"fa fa-star checked\"></span>\n" +
+                                                        "<span class=\"fa fa-star checked\"></span>\n" +
+                                                        "<span class=\"fa fa-star\"></span>\n" +
+                                                        "<span class=\"fa fa-star\"></span>";
+                                break;
+                              case 4:
+                                starNode[i].innerHTML = "<span class=\"fa fa-star checked\"></span>\n" +
+                                                        "<span class=\"fa fa-star checked\"></span>\n" +
+                                                        "<span class=\"fa fa-star checked\"></span>\n" +
+                                                        "<span class=\"fa fa-star checked\"></span>\n" +
+                                                        "<span class=\"fa fa-star\"></span>";
+                                break;
+                              case 5:
+                                starNode[i].innerHTML = "<span class=\"fa fa-star checked\"></span>\n" +
+                                                        "<span class=\"fa fa-star checked\"></span>\n" +
+                                                        "<span class=\"fa fa-star checked\"></span>\n" +
+                                                        "<span class=\"fa fa-star checked\"></span>\n" +
+                                                        "<span class=\"fa fa-star checked\"></span>";
+                                break;
+
+                            }
+                }
+            </script>
 
 
 {% endblock %}

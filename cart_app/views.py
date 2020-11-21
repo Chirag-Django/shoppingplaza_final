@@ -7,6 +7,7 @@ from users_app.models import GuestCustomer
 from address.forms import ShippingAddressForm
 from address.models import ShippingAddress
 from django.http import JsonResponse
+
 # Create your views here.
 
 def get_or_create_cart(request):
@@ -89,14 +90,13 @@ def checkout_page(request):
             request.session['shipping_addr_id'] = form.pk
     shipping_addr_id = request.session.get('shipping_addr_id')
     shipping_object = ShippingAddress.objects.filter(id=shipping_addr_id).first()
-    print(shipping_addr_id)
     if my_order:
         my_order.billing_details = billing_details
         my_order.shipping_address = shipping_object
         my_order.save()
     return render(request,'cart_app/checkout_page.html',{'my_order':my_order,
                                                          'billing_details':billing_details,
-                                                         'shipping_address':form})
+                                                         'shipping_address':form,'shipping_object':shipping_object})
 
 def confirm_order(request):
     new_cart, my_cart = get_or_create_cart(request)

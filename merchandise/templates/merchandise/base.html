@@ -32,7 +32,6 @@
                 <ul id="menu-items">
                     <li><a href="{% url 'merchandise:home' %}">Home</a></li>
                     <li><a href="{% url 'merchandise:products' %}">Products</a></li>
-                    <li><a href="{% url 'merchandise:home' %}">About</a></li>
                     <li><a href="{% url 'merchandise:home' %}">Customer Care</a></li>
                     {% if user.is_authenticated %}
                     <li><a href="{% url 'users_app:logout' %}">Logout</a></li>
@@ -103,7 +102,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
     crossorigin="anonymous"></script>
-    <script src="{% static 'js/index.js' %}"></script>
+
     <script>
     $(document).ready(function(){
         var searchForm = $('.auto-search')
@@ -148,5 +147,5 @@
         })
         })
     </script>
-
+    <script src="{% static 'js/index.js' %}"></script>
 </html>
