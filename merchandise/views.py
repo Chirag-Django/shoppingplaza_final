@@ -75,3 +75,5 @@ def productDetails(request,slug=None):
                                                               'cart':cart})
 
 
+def customer_care(request):
+    return render(request,'merchandise/customer_care.html')
